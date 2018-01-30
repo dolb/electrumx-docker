@@ -1,4 +1,4 @@
-CONTAINER="0.1/electrumx-docker"
+CONTAINER="electrumx-docker"
 
 echo "This is a sample script building docker container on the host you are connected to"
 
@@ -16,4 +16,4 @@ docker run -d \
   -e RPCPASS="$(head -c 32 /dev/urandom | base64)" \
   -p 50002:50002 \
   --name $CONTAINER \
-  electrumx_server
+  $CONTAINER electrumx-server

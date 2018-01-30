@@ -1,4 +1,4 @@
-CONTAINER="0.1/electrumx-docker"
+CONTAINER="electrumx-docker"
 
 echo "This is a sample script building docker container on the host you are connected to"
 
