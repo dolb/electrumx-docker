@@ -14,6 +14,8 @@ docker run -d \
   -v $1/zcl_electrum_db:/home/zcluser/zcl_electrum_db \
   -v $1/.zclassic:/home/zcluser/.zclassic \
   -v $1/.zcash-params:/home/zcluser/.zcash-params \
+  -e RPCUSER="customuser" \
+  -e RPCPASS="custompassword" \
   -p 50002:50002 \
   --name $CONTAINER \
   $CONTAINER electrumx-server

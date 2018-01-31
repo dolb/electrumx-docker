@@ -8,7 +8,11 @@ openssl x509 -req -days 1825 -in server.csr -signkey server.key -out server.crt
 rm server.pass.key
 rm server.csr
 
-source /home/zcluser/config
+
+source /home/zcluser/default_config
+
+echo "$RPCUSER"
+echo "$RPCPASS"
 
 [[ "$RPCUSER" ]] || RPCUSER=$DEFAULT_RPCUSER
 [[ "$RPCPASS" ]] || RPCPASS=$DEFAULT_RPCPASS
@@ -24,9 +28,9 @@ if [ ! -f "/home/zcluser/.zcash-params/sprout-proving.key" ]; then
   /home/zcluser/zclassic/zcutil/fetch-params.sh
 fi
 
-#echo "Veryfing sha256 sums of zcash params $VK_SHA256 and $PK_SHA256"
+echo "Veryfing sha256 sums of zcash params $VK_SHA256 and $PK_SHA256"
 
-#[[ "$(sha256sum /home/zcluser/.zcash-params/sprout-verifying.key | awk '{print $1}')" != "$VK_SHA256" ]] && echo "FATAL - zcash params veryfing key checksum does not match!" && exit 1
+[[ "$(sha256sum /home/zcluser/.zcash-params/sprout-verifying.key | awk '{print $1}')" != "$VK_SHA256" ]] && echo "FATAL - zcash params veryfing key checksum does not match!" && exit 1
 #[[ "$(sha256sum /home/zcluser/.zcash-params/sprout-proving.key | awk '{print $1}')" != "$PK_SHA256" ]] && echo "FATAL - zcash params proving key checksum does not match!" && exit 1
 
 
