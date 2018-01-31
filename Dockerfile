@@ -23,20 +23,20 @@ VOLUME /home/zcluser/zcl_electrum_db
 VOLUME /home/zcluser/.zclassic
 VOLUME /home/zcluser/.zcash-params
 
-COPY elextrumx-server /usr/bin/electrumx-server
-COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
-RUN chmod +x /usr/bin/electrumx-server && chmod +x /usr/bin/docker-entrypoint.sh
-
 
 # Build zcl node daemon
 
 RUN git clone https://github.com/z-classic/zclassic
 RUN /home/zcluser/zclassic/zcutil/build.sh -j$(nproc)
-RUN /home/zcluser/zclassic/zcutil/fetch-params.sh
+
 
 RUN git clone https://github.com/BTCP-community/electrumx.git
 RUN wget -q https://github.com/z-classic/zclassic/releases/download/Config/zclassic.conf
 RUN sed -ie '/^rpcport=8232/a txindex=1' zclassic.conf
+
+COPY elextrumx-server /usr/bin/electrumx-server
+COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/electrumx-server && chmod +x /usr/bin/docker-entrypoint.sh
 
 EXPOSE 50002
 
