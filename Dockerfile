@@ -29,6 +29,7 @@ VOLUME /home/zcluser/.zcash-params
 RUN git clone https://github.com/z-classic/zclassic
 RUN /home/zcluser/zclassic/zcutil/build.sh -j$(nproc)
 
+RUN /home/zcluser/zclassic/zcutil/fetch-params.sh
 
 RUN git clone https://github.com/BTCP-community/electrumx.git
 RUN wget -q https://github.com/z-classic/zclassic/releases/download/Config/zclassic.conf
@@ -39,6 +40,11 @@ COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 RUN chmod +x /usr/bin/electrumx-server && chmod +x /usr/bin/docker-entrypoint.sh
 
 EXPOSE 50002
+
+RUN echo DEFAULT_RPCUSER="zcluser" > /home/zcluser/config \
+&& echo DEFAULT_RPCPASS="$(head -c 32 /dev/urandom | base64)" >> /home/zcluser/config \
+&& echo VK_SHA256="4bd498dae0aacfd8e98dc306338d017d9c08dd0918ead18172bd0aec2fc5df82" >> /home/zcluser/config \
+&& echo PK_SHA256="8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7" >> /home/zcluser/config
 
 ENV CUSTOM_USER="zcluser"
 
