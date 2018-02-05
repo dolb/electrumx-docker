@@ -1,12 +1,15 @@
 #!/bin/bash
 
 # Make self-signed SSL cert and key
-openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
-openssl rsa -passin pass:x -in server.pass.key -out server.key
-openssl req -new -key server.key -out server.csr -subj "/C=NL/CN=electrumx.zclassic.org"
-openssl x509 -req -days 1825 -in server.csr -signkey server.key -out server.crt
-rm server.pass.key
-rm server.csr
+if [ ! -f "/home/zcluser/certs/server.key" ] || [ ! -f "/home/zcluser/certs/server.crt" ]; then
+  mkdir /home/zcluser/certs
+  openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
+  openssl rsa -passin pass:x -in server.pass.key -out certs/server.key
+  openssl req -new -key certs/server.key -out server.csr -subj "/C=NL/CN=electrumx.zclassic.org"
+  openssl x509 -req -days 1825 -in server.csr -signkey server.key -out certs/server.crt
+  rm server.pass.key
+  rm server.csr
+fi
 
 
 source /home/zcluser/default_config
@@ -36,4 +39,4 @@ echo "Veryfing sha256 sums of zcash params $VK_SHA256 and $PK_SHA256"
 
 /home/zcluser/zclassic/src/zcashd -daemon
 
-COIN=Zclassic DB_DIRECTORY=/home/zcluser/zcl_electrum_db DAEMON_URL=http://${RPCUSER}:${RPCPASS}@127.0.0.1:8232 HOST=0.0.0.0 SSL_PORT=50002 PEER_DISCOVERY=Off SSL_CERTFILE=/home/zcluser/server.crt SSL_KEYFILE=/home/zcluser/server.key BANDWIDTH_LIMIT=10000000 /home/zcluser/electrumx/electrumx_server.py
+COIN=Zclassic DB_DIRECTORY=/home/zcluser/zcl_electrum_db DAEMON_URL=http://${RPCUSER}:${RPCPASS}@127.0.0.1:8232 HOST=0.0.0.0 SSL_PORT=50002 PEER_DISCOVERY=Off SSL_CERTFILE=/home/zcluser/certs/server.crt SSL_KEYFILE=/home/zcluser/certs/server.key BANDWIDTH_LIMIT=10000000 /home/zcluser/electrumx/electrumx_server.py
