@@ -45,7 +45,7 @@ ENV CUSTOM_USER="zcluser"
 
 USER root
 
-COPY elextrumx-server /usr/bin/electrumx-server
+COPY electrumx-server /usr/bin/electrumx-server
 COPY docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
 RUN chmod +x /usr/bin/electrumx-server && chmod +x /usr/bin/docker-entrypoint.sh
 
