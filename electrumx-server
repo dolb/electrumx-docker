@@ -3,11 +3,11 @@
 # Make self-signed SSL cert and key
 if [ ! -f "/home/zcluser/certs/server.key" ] || [ ! -f "/home/zcluser/certs/server.crt" ]; then
   echo "No certificates provided as a VOLUME - generating new keypair"
-  mkdir /home/zcluser/certs
+  mkdir -p /home/zcluser/certs
   openssl genrsa -des3 -passout pass:x -out server.pass.key 2048
   openssl rsa -passin pass:x -in server.pass.key -out certs/server.key
   openssl req -new -key certs/server.key -out server.csr -subj "/C=NL/CN=electrumx.zclassic.org"
-  openssl x509 -req -days 1825 -in server.csr -signkey server.key -out certs/server.crt
+  openssl x509 -req -days 1825 -in server.csr -signkey certs/server.key -out certs/server.crt
   rm server.pass.key
   rm server.csr
   echo "Key pair generated succesfully"
